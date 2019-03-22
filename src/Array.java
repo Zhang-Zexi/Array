@@ -5,14 +5,14 @@
  * @Date 2019/3/22 11:08
  * Version 1.0
  **/
-public class Array {
+public class Array<E> {
 
-    private int[] data;
+    private E[] data;
     private int size;
 
     // 添加容量
     public Array(int capacity) {
-        data = new int[capacity];
+        data = (E[]) new Object[capacity];
         size = 0;
     }
 
@@ -37,7 +37,7 @@ public class Array {
     }
 
     //在最后添加元素
-    public void addLast(int e) {
+    public void addLast(E e) {
 
 //        if(size == data.length) {
 //            throw new IllegalArgumentException("AddLast failed. Array is full");
@@ -49,12 +49,12 @@ public class Array {
     }
 
 //    在最前添加元素
-    public void addFirst(int e) {
+    public void addFirst(E e) {
         add(0, e);
     }
 
     // 添加元素
-    public void add (int index, int e) {
+    public void add (int index, E e) {
 
         // 如果数据的个数和容量相等，则无法添加元素
         if(size == data.length) {
@@ -79,14 +79,14 @@ public class Array {
         size++;
     }
 
-    int get(int index) {
+    E get(int index) {
         if(index < 0 || index >= size) {
             throw new IllegalArgumentException("Get failed. Index is illegal");
         }
         return data[index];
     }
 
-    void set(int index, int e) {
+    void set(int index, E e) {
         if(index < 0 || index >= size) {
             throw new IllegalArgumentException("set failed. Index is illegal");
         }
@@ -95,14 +95,14 @@ public class Array {
 
     public boolean contains(int e) {
         for(int i = 0; i < size; i++) {
-            if(data[i] == e) {
+            if(data[i].equals(e)) {
                 return true;
             }
         }
         return false;
     }
 
-    public int find(int e) {
+    public int find(E e) {
         for(int i = 0; i < size; i++) {
             if(data[i] == e) {
                 return i;
@@ -111,28 +111,29 @@ public class Array {
         return -1;
     }
 
-    public int remove(int index) {
+    public E remove(int index) {
 
         if(index < 0 || index >= size) {
             throw new IllegalArgumentException("index Exception");
         }
-        int ret = data[index];
+        E ret = data[index];
         for(int i = index + 1; i < size; i++) {
             data[i - 1] = data[i];
         }
         size -- ;
+        data[size] = null; //loitering objects != memory leak
         return ret;
     }
 
-    public int removeFirst() {
+    public E removeFirst() {
       return remove(0);
     }
 
-    public int removeLast() {
+    public E removeLast() {
         return remove(size - 1);
     }
 
-    public void removeElem(int e) {
+    public void removeElem(E e) {
         int index = find(e);
         if(index != -1) {
             remove(index);
