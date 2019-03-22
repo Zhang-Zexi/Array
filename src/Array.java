@@ -79,6 +79,20 @@ public class Array {
         size++;
     }
 
+    int get(int index) {
+        if(index < 0 || index >= size) {
+            throw new IllegalArgumentException("Get failed. Index is illegal");
+        }
+        return data[index];
+    }
+
+    void set(int index, int e) {
+        if(index < 0 || index >= size) {
+            throw new IllegalArgumentException("set failed. Index is illegal");
+        }
+        data[index] = e;
+    }
+
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
