@@ -56,15 +56,17 @@ public class Array<E> {
     // 添加元素
     public void add (int index, E e) {
 
-        // 如果数据的个数和容量相等，则无法添加元素
-        if(size == data.length) {
-            throw new IllegalArgumentException("AddLast failed. Array is full");
-        }
-
         //添加的元素的索引不能小于0
         //添加元素的索引不能大于数据的索引+1（数组的长度），因为所有元素都必须相连
         if(index < 0 || index > size) {
             throw new IllegalArgumentException("index Exception");
+        }
+
+        // 如果数据的个数和容量相等，则无法添加元素
+        if(size == data.length) {
+//            throw new IllegalArgumentException("AddLast failed. Array is full");
+            resize(2 * data.length);
+            //ps:在ArrayList中扩容的是1.5
         }
 
         //size-1是最后一个索引
@@ -122,6 +124,10 @@ public class Array<E> {
         }
         size -- ;
         data[size] = null; //loitering objects != memory leak
+
+        if(size == data.length/2) {
+            resize(data.length/2);
+        }
         return ret;
     }
 
@@ -153,5 +159,14 @@ public class Array<E> {
         }
         res.append(']');
         return  res.toString();
+    }
+
+    //实现数组的扩容操作
+    private void resize(int newCapacity) {
+        E[] newData = (E[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[i];
+        }
+        data = newData;
     }
 }
